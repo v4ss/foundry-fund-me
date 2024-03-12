@@ -50,3 +50,18 @@ contract FundMeTest is Test {
 ```
 
 Run `forge test` to execute the tests and `forge test -vv` to see the logs.
+
+Run `forge test --match-test testPriceFeedVersionIsAccurate` to only run this test function.
+
+If we have to interact with a real contract in a real chain, we can forked a network during the test like thie :
+```bash
+forge test --match-test testPriceFeedVersionIsAccurate -vvv --fork-url $SEPOLIA_RPC_URL
+```
+In this case, we run the `testPriceFeedVersionIsAccurate`test in a copy of sepolia chain. So this time, the test passed.
+
+### Coverage
+
+To see the coverage that tests covered, you can run :
+```bash
+forge coverage --fork-url $SEPOLIA_RPC_URL
+```
