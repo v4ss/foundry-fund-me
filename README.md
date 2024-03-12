@@ -1,66 +1,52 @@
-## Foundry
+# FundMe Foundry project
 
-**Foundry is a blazing fast, portable and modular toolkit for Ethereum application development written in Rust.**
+## Setup
 
-Foundry consists of:
-
--   **Forge**: Ethereum testing framework (like Truffle, Hardhat and DappTools).
--   **Cast**: Swiss army knife for interacting with EVM smart contracts, sending transactions and getting chain data.
--   **Anvil**: Local Ethereum node, akin to Ganache, Hardhat Network.
--   **Chisel**: Fast, utilitarian, and verbose solidity REPL.
-
-## Documentation
-
-https://book.getfoundry.sh/
-
-## Usage
-
-### Build
-
-```shell
-$ forge build
+```bash
+forge init
 ```
 
-### Test
-
-```shell
-$ forge test
+Install the chainlink/contracts packages
+```bash
+forge install smartcontractkit/chainlink-brownie-contracts@0.6.1 --no-commit
 ```
 
-### Format
-
-```shell
-$ forge fmt
+We have now to do a remapping in our `foundry.toml` to link the `@chainlink/contarct` to the `chainlink-brownie-contract`lib.
+Add this line :
+```toml
+remappings = [
+    "@chainlink/contracts/=lib/chainlink-brownie-contracts/contracts/",
+]
 ```
 
-### Gas Snapshots
-
-```shell
-$ forge snapshot
+Than run :
+```bash
+forge build
+# OR
+forge compile
 ```
 
-### Anvil
+## Tests
 
-```shell
-$ anvil
+Create a new file in `test/FundMeTest.t.sol` :
+```js
+// SPDX-License-Identifier: MIT
+pragma solidity ^0.8.18;
+
+import {Test, console} from "forge-std/Test.sol";
+
+contract FundMeTest is Test {
+    uint256 number;
+
+    function setUp() external {
+        number = 1;
+    }
+
+    function testDemo() public {
+        console.log(number);
+        assertEq(number, 1);
+    }
+}
 ```
 
-### Deploy
-
-```shell
-$ forge script script/Counter.s.sol:CounterScript --rpc-url <your_rpc_url> --private-key <your_private_key>
-```
-
-### Cast
-
-```shell
-$ cast <subcommand>
-```
-
-### Help
-
-```shell
-$ forge --help
-$ anvil --help
-$ cast --help
-```
+Run `forge test` to execute the tests and `forge test -vv` to see the logs.
