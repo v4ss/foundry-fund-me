@@ -72,3 +72,47 @@ To see the coverage that tests covered, you can run :
 ```bash
 forge coverage --fork-url $SEPOLIA_RPC_URL
 ```
+
+## Deploy
+
+```bash
+anvil
+# And in another terminal :
+forge script script/DeployFundMe.s.sol --rpc-url http://127.0.0.1:8545 --private-key 0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80 --broadcast
+```
+
+## Storage Optimization
+
+To see the contract storage :
+
+```bash
+forge inspect <contract-name> storageLayout
+# Example :
+forge inspect FundMe storageLayout
+```
+
+To see the slot of existing contracts :
+
+```bash
+cast storage <contract-address> <slot-number>
+# Example :
+cast storage 0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512 2
+```
+
+## Makefile
+
+```makefile
+-include .env
+
+build:; forge build
+
+deploy-sepolia:
+	forge script script/DeployFundMe.s.sol:DeployFundMe --rpc-url $(SEPOLIA_RPC_URL) --account 0x14 --broadcast --verify --etherscan-api-key $(ETHERSCAN_API_KEY) -vvvv
+```
+
+To execute :
+
+```bash
+make build
+make deploy-sepolia
+```
